@@ -28,8 +28,8 @@ def get_summary(params: dict):
     Raises:
         HTTPError: If any of the external API calls fail.
     """
-    retained_metrics_url = f"{VAULT_URL}/v3//retained-user-metrics"
-    signup_metrics_url = f"{VAULT_URL}/v3//signup-metrics"
+    retained_metrics_url = f"{VAULT_URL}/v3/retained-user-metrics"
+    signup_metrics_url = f"{VAULT_URL}/v3/signup-metrics"
 
     try:
         retained_response = requests.get(
