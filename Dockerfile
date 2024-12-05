@@ -9,4 +9,4 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY . .
 
-CMD ["fastapi", "run", "app/main.py", "--proxy-headers", "--port", "80", "--workers", "4"]
+CMD ["fastapi", "run", "main.py", "--proxy-headers", "--port", "80", "--workers", "4"]
