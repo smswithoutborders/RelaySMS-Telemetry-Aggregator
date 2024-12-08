@@ -28,8 +28,8 @@ def get_summary(params: dict):
     Raises:
         HTTPError: If any of the external API calls fail.
     """
-    retained_metrics_url = f"{VAULT_URL}/v3/retained-user-metrics"
-    signup_metrics_url = f"{VAULT_URL}/v3/signup-metrics"
+    retained_metrics_url = f"{VAULT_URL}/v3/metrics/retained"
+    signup_metrics_url = f"{VAULT_URL}/v3/metrics/signup"
 
     try:
         retained_response = requests.get(
@@ -43,46 +43,12 @@ def get_summary(params: dict):
         retained_metrics = retained_response.json()
         signup_metrics = signup_response.json()
 
-        combined_metrics = {
-            "summary": {
-                "total_signup_users": signup_metrics["total_signup_count"],
-                "total_active_users": retained_metrics["total_retained_user_count"],
-                "total_signup_countries": signup_metrics["total_country_count"],
-                "total_active_countries": retained_metrics["total_country_count"],
-                "data": [],
-            }
+        metrics_summary = {
+            "total_signup_users": signup_metrics["total_signup_users"],
+            "total_retained_users": retained_metrics["total_retained_users"],
         }
 
-        all_dates = set(signup_metrics["data"].keys()).union(
-            retained_metrics["data"].keys()
-        )
-
-        sorted_dates = sorted(all_dates, reverse=True)
-
-        for date in sorted_dates:
-            combined_date_data = {"date": date, "stats": []}
-
-            signup_countries = signup_metrics["data"].get(date, {})
-            retained_countries = retained_metrics["data"].get(date, {})
-            all_countries = set(signup_countries.keys()).union(
-                retained_countries.keys()
-            )
-
-            for country in all_countries:
-                stats = {
-                    "country": country,
-                    "signup_users": signup_countries.get(country, {}).get(
-                        "signup_count", 0
-                    ),
-                    "active_users": retained_countries.get(country, {}).get(
-                        "retained_user_count", 0
-                    ),
-                }
-                combined_date_data["stats"].append(stats)
-
-            combined_metrics["summary"]["data"].append(combined_date_data)
-
-        return combined_metrics
+        return metrics_summary
 
     except requests.RequestException as e:
         raise e
