@@ -52,3 +52,65 @@ def get_summary(params: dict):
 
     except requests.RequestException as e:
         raise e
+
+
+def get_signup(params: dict):
+    """
+    Fetches signup metrics data from the metrics API.
+
+    Args:
+        params (dict): Query parameters to include in the API request. Expected keys may include:
+            - start_date (str): Start date for the metrics in 'YYYY-MM-DD' format.
+            - end_date (str): End date for the metrics in 'YYYY-MM-DD' format.
+            - granularity (str, optional): Level of detail, e.g., 'day' or 'month'.
+            - group_by (str, optional): Dimension to group the metrics by, e.g., 'country'.
+            - top (int, optional): Maximum number of results to return.
+            - page (int, optional): Pagination page number.
+            - page_size (int, optional): Number of records per page.
+
+    Returns:
+        dict: The JSON response from the metrics API containing signup data.
+    """
+    signup_metrics_url = f"{VAULT_URL}/v3/metrics/signup"
+
+    try:
+        signup_response = requests.get(signup_metrics_url, params=params, timeout=30)
+
+        signup_response.raise_for_status()
+
+        return signup_response.json()
+
+    except requests.RequestException as e:
+        raise e
+
+
+def get_retained(params: dict):
+    """
+    Fetches retained metrics data from the metrics API.
+
+    Args:
+        params (dict): Query parameters to include in the API request. Expected keys may include:
+            - start_date (str): Start date for the metrics in 'YYYY-MM-DD' format.
+            - end_date (str): End date for the metrics in 'YYYY-MM-DD' format.
+            - granularity (str, optional): Level of detail, e.g., 'day' or 'month'.
+            - group_by (str, optional): Dimension to group the metrics by, e.g., 'country'.
+            - top (int, optional): Maximum number of results to return.
+            - page (int, optional): Pagination page number.
+            - page_size (int, optional): Number of records per page.
+
+    Returns:
+        dict: The JSON response from the metrics API containing retained data.
+    """
+    retained_metrics_url = f"{VAULT_URL}/v3/metrics/retained"
+
+    try:
+        retained_response = requests.get(
+            retained_metrics_url, params=params, timeout=30
+        )
+
+        retained_response.raise_for_status()
+
+        return retained_response.json()
+
+    except requests.RequestException as e:
+        raise e
