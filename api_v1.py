@@ -33,6 +33,9 @@ def get_security_headers() -> dict:
         "Referrer-Policy": "no-referrer-when-downgrade",
         "Content-Security-Policy": "default-src 'self';",
         "Permissions-Policy": "geolocation=(self)",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET",
+        "Access-Control-Allow-Headers": "Content-Type",
     }
 
 
