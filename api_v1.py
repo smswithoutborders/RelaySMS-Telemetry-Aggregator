@@ -33,6 +33,9 @@ def get_security_headers() -> dict:
         "Referrer-Policy": "no-referrer-when-downgrade",
         "Content-Security-Policy": "default-src 'self';",
         "Permissions-Policy": "geolocation=(self)",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET",
+        "Access-Control-Allow-Headers": "Content-Type",
     }
 
 
@@ -57,12 +60,7 @@ def summary(query: Annotated[SummaryParams, Query()]) -> SummaryResponse:
 
         summary_data = get_summary(params)
 
-        response_data = {
-            "summary": {
-                "total_signup_users": summary_data["total_signup_users"],
-                "total_retained_users": summary_data["total_retained_users"],
-            }
-        }
+        response_data = {"summary": summary_data}
 
         return JSONResponse(content=response_data, headers=get_security_headers())
     except requests.HTTPError as e:

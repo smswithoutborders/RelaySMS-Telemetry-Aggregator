@@ -46,6 +46,10 @@ def get_summary(params: dict):
         metrics_summary = {
             "total_signup_users": signup_metrics["total_signup_users"],
             "total_retained_users": retained_metrics["total_retained_users"],
+            "total_signup_countries": signup_metrics["total_countries"],
+            "total_retained_countries": retained_metrics["total_countries"],
+            "signup_countries": signup_metrics["countries"],
+            "retained_countries": retained_metrics["countries"],
         }
 
         return metrics_summary
