@@ -16,8 +16,8 @@ Collects, analyzes, and exposes RelaySMS usage data via a unified API for transp
 1. **Clone the Repository**:
 
    ```bash
-    https://github.com/smswithoutborders/RelaySMS-Telemetry-Aggregator.git
-    cd relaysms-telemetry-aggregator
+    git clone https://github.com/smswithoutborders/RelaySMS-Telemetry-Aggregator.git
+    cd RelaySMS-Telemetry-Aggregator
    ```
 
 2. **Create a Virtual Environment**:
