@@ -14,6 +14,10 @@ class SummaryDetails(BaseModel):
 
     total_signup_users: int
     total_retained_users: int
+    total_signup_countries: int
+    total_retained_countries: int
+    signup_countries: list
+    retained_countries: list
 
 
 class SummaryParams(BaseModel):
@@ -84,6 +88,8 @@ class SignupDetails(BaseModel):
     """Details of the signup metrics."""
 
     total_signup_users: int
+    total_countries: int
+    countries: list
     pagination: PaginationDetails
     data: List[Union[CountrySignupData, TimeframeSignupData]]
 
@@ -112,6 +118,8 @@ class RetainedDetails(BaseModel):
     """Details of the retained metrics."""
 
     total_retained_users: int
+    total_countries: int
+    countries: list
     pagination: PaginationDetails
     data: List[Union[CountryRetainedData, TimeframeRetainedData]]
 
