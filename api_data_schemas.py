@@ -14,6 +14,7 @@ class SummaryDetails(BaseModel):
 
     total_signup_users: int
     total_retained_users: int
+    total_retained_users_with_tokens: int
     total_signup_countries: int
     total_retained_countries: int
     signup_countries: list
@@ -118,6 +119,7 @@ class RetainedDetails(BaseModel):
     """Details of the retained metrics."""
 
     total_retained_users: int
+    total_retained_users_with_tokens: int
     total_countries: int
     countries: list
     pagination: PaginationDetails
