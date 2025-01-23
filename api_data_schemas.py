@@ -16,6 +16,7 @@ class SummaryDetails(BaseModel):
     total_retained_users: int
     total_retained_users_with_tokens: int
     total_signup_countries: int
+    total_signups_from_bridges: int
     total_retained_countries: int
     signup_countries: list
     retained_countries: list
@@ -90,6 +91,7 @@ class SignupDetails(BaseModel):
 
     total_signup_users: int
     total_countries: int
+    total_signups_from_bridges: int
     countries: list
     pagination: PaginationDetails
     data: List[Union[CountrySignupData, TimeframeSignupData]]
