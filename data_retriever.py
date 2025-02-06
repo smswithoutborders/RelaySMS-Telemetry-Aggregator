@@ -13,6 +13,9 @@ logger = get_logger(__name__)
 VAULT_DOMAIN = get_env_var("RELAYSMS_VAULT_DOMAIN", strict=True)
 VAULT_PORT = get_env_var("RELAYSMS_VAULT_PORT", default_value=443)
 VAULT_URL = f"{VAULT_DOMAIN}:{VAULT_PORT}"
+PUBLISHER_DOMAIN = get_env_var("RELAYSMS_PUBLISHER_DOMAIN", strict=True)
+PUBLISHER_PORT = get_env_var("RELAYSMS_PUBLISHER_PORT", default_value=443)
+PUBLISHER_URL = f"{PUBLISHER_DOMAIN}:{PUBLISHER_PORT}"
 
 
 def get_summary(params: dict):
@@ -30,6 +33,7 @@ def get_summary(params: dict):
     """
     retained_metrics_url = f"{VAULT_URL}/v3/metrics/retained"
     signup_metrics_url = f"{VAULT_URL}/v3/metrics/signup"
+    publisher_metrics = f"{PUBLISHER_URL}/v1/metrics/publisher"
 
     try:
         retained_response = requests.get(
@@ -50,8 +54,11 @@ def get_summary(params: dict):
             "total_signups_from_bridges": signup_metrics["total_signups_from_bridges"],
             "total_signup_countries": signup_metrics["total_countries"],
             "total_retained_countries": retained_metrics["total_countries"],
+            "total_publications": publisher_metrics["total_publications"],
+            "total_published_publications": publisher_metrics["total_published_publications"],
+            "total_failed_publications": publisher_metrics["total_failed_publications"],
             "signup_countries": signup_metrics["countries"],
-            "retained_countries": retained_metrics["countries"],
+            "retained_countries": retained_metrics["countries"]
         }
 
         return metrics_summary
@@ -119,4 +126,32 @@ def get_retained(params: dict):
         return retained_response.json()
 
     except requests.RequestException as e:
+        raise e
+
+def get_publications(params: dict):
+    """
+    Fetches publication data from the Publisher API.
+
+    Args:
+        params (dict): Query parameters for filtering the publications.
+            - start_date (str): Start date in 'YYYY-MM-DD' format.
+            - end_date (str): End date in 'YYYY-MM-DD' format.
+            - country_code (str, optional): Filter by country.
+            - platform_name (str, optional): Filter by platform.
+            - source (str, optional): Filter by source.
+            - status (str, optional): Filter by status.
+            - gateway_client (str, optional): Filter by gateway client.
+
+    Returns:
+        dict: The JSON response from the Publisher API containing publication data.
+    """
+    publications_url = f"{PUBLISHER_URL}/v1/metrics/publications"
+
+    try:
+        response = requests.get(publications_url, params=params, timeout=30)
+        response.raise_for_status()
+        return response.json()
+
+    except requests.RequestException as e:
+        logger.error(f"Error fetching publications: {e}")
         raise e
