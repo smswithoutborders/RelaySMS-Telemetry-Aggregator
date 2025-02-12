@@ -18,9 +18,6 @@ class SummaryDetails(BaseModel):
     total_signup_countries: int
     total_signups_from_bridges: int
     total_retained_countries: int
-    total_publications: int
-    total_published_publications: int
-    total_failed_publications: int
     signup_countries: list
     retained_countries: list
     
@@ -175,13 +172,21 @@ class PublicationsDetails(BaseModel):
     status: str
     gateway_client: str
     date_time: str
+    id: int
+    
+class PublicationsSummary(BaseModel):
+    """Summary of total publications."""
+
+    total_publications: int
+    total_published: int
+    total_failed: int
+    data: List[PublicationsDetails]  
     
 class PublicationsResponse(BaseModel):
     """Response model containing publications metrics."""
 
-    publications: PublicationsDetails
+    publications: PublicationsSummary
     
-
 class ErrorResponse(BaseModel):
     """Response model for errors."""
 

@@ -54,9 +54,6 @@ def get_summary(params: dict):
             "total_signups_from_bridges": signup_metrics["total_signups_from_bridges"],
             "total_signup_countries": signup_metrics["total_countries"],
             "total_retained_countries": retained_metrics["total_countries"],
-            "total_publications": publisher_metrics["total_publications"],
-            "total_published_publications": publisher_metrics["total_published_publications"],
-            "total_failed_publications": publisher_metrics["total_failed_publications"],
             "signup_countries": signup_metrics["countries"],
             "retained_countries": retained_metrics["countries"]
         }
