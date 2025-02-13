@@ -8,7 +8,7 @@ from typing import Annotated
 import requests
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
-from data_retriever import get_summary, get_signup, get_retained
+from data_retriever import get_summary, get_signup, get_retained, get_publications
 from api_data_schemas import (
     MetricsParams,
     ErrorResponse,
@@ -16,6 +16,8 @@ from api_data_schemas import (
     SummaryParams,
     SignupResponse,
     RetainedResponse,
+    PublicationsParams,
+    PublicationsResponse
 )
 
 router = APIRouter(prefix="/v1", tags=["API V1"])
@@ -131,6 +133,42 @@ def retained(query: Annotated[MetricsParams, Query()]) -> RetainedResponse:
         retained_data = get_retained(params)
 
         response_data = {"retained": retained_data}
+
+        return JSONResponse(content=response_data, headers=get_security_headers())
+    except requests.HTTPError as e:
+        raise HTTPException(
+            status_code=e.response.status_code, detail=e.response.json()
+        ) from e
+
+@router.get(
+    "/publications",
+    responses={
+        400: {"model": ErrorResponse},
+        422: {"model": ErrorResponse},
+        500: {"model": ErrorResponse},
+    },
+    response_model=PublicationsResponse,
+)
+def publications(query: Annotated[PublicationsParams, Query()]):
+    """Fetch publication metrics."""
+
+    try:
+        params = {
+            "start_date": query.start_date,
+            "end_date": query.end_date,
+            "country_code": query.country_code,
+            "platform_name": query.platform_name,
+            "source": query.source,
+            "status": query.status,
+            "gateway_client": query.gateway_client,
+            "top": query.top,
+            "page": query.page,
+            "page_size": query.page_size,
+        }
+
+        publications_data = get_publications(params)
+
+        response_data = {"publications": publications_data}
 
         return JSONResponse(content=response_data, headers=get_security_headers())
     except requests.HTTPError as e:
