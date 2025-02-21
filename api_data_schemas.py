@@ -184,6 +184,7 @@ class PublicationsSummary(BaseModel):
     total_published: int
     total_failed: int
     data: List[PublicationsDetails]  
+    pagination: PaginationDetails
     
 class PublicationsResponse(BaseModel):
     """Response model containing publications metrics."""

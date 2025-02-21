@@ -161,7 +161,6 @@ def publications(query: Annotated[PublicationsParams, Query()]):
             "source": query.source,
             "status": query.status,
             "gateway_client": query.gateway_client,
-            "top": query.top,
             "page": query.page,
             "page_size": query.page_size,
         }
