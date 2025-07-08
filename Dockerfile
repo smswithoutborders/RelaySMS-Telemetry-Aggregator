@@ -5,7 +5,8 @@ WORKDIR /aggregator
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN --mount=type=cache,sharing=locked,target=/root/.cache/pip \
+    pip install --disable-pip-version-check --quiet --no-cache-dir -r requirements.txt
 
 COPY . .
 
