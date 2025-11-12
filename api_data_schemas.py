@@ -13,7 +13,9 @@ class SummaryDetails(BaseModel):
     """Details of the summary metrics."""
 
     total_signup_users: int
+    total_signup_users_with_emails: int
     total_retained_users: int
+    total_retained_users_with_emails: int
     total_retained_users_with_tokens: int
     total_signup_countries: int
     total_signups_from_bridges: int
@@ -23,7 +25,7 @@ class SummaryDetails(BaseModel):
     total_failed_publications: int
     signup_countries: list
     retained_countries: list
-    
+
 
 class SummaryParams(BaseModel):
     """Parameters for filtering and grouping summary metrics."""
@@ -135,7 +137,8 @@ class RetainedResponse(BaseModel):
     """Response model containing retained metrics."""
 
     retained: RetainedDetails
-    
+
+
 class PublicationsParams(BaseModel):
     """Parameters for filtering and grouping publication metrics."""
 
@@ -147,9 +150,7 @@ class PublicationsParams(BaseModel):
     platform_name: str = Field(
         default=None, description="Filter by platform name (e.g., 'Twitter')."
     )
-    source: str = Field(
-        default=None, description="Filter by source of publication."
-    )
+    source: str = Field(default=None, description="Filter by source of publication.")
     status: Literal["published", "failed"] = Field(
         default=None, description="Filter by publication status."
     )
@@ -166,6 +167,7 @@ class PublicationsParams(BaseModel):
         default=10, ge=10, le=100, description="Number of records per page."
     )
 
+
 class PublicationsDetails(BaseModel):
     """Details of the summary metrics."""
 
@@ -176,21 +178,24 @@ class PublicationsDetails(BaseModel):
     gateway_client: str
     date_time: str
     id: int
-    
+
+
 class PublicationsSummary(BaseModel):
     """Summary of total publications."""
 
     total_publications: int
     total_published: int
     total_failed: int
-    data: List[PublicationsDetails]  
+    data: List[PublicationsDetails]
     pagination: PaginationDetails
-    
+
+
 class PublicationsResponse(BaseModel):
     """Response model containing publications metrics."""
 
     publications: PublicationsSummary
-    
+
+
 class ErrorResponse(BaseModel):
     """Response model for errors."""
 
