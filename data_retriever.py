@@ -47,15 +47,23 @@ def get_summary(params: dict):
 
         retained_metrics = retained_response.json()
         signup_metrics = signup_response.json()
-        
+
         publisher_response = requests.get(publisher_metrics, params=params, timeout=30)
         publisher_response.raise_for_status()
         publisher_metrics_data = publisher_response.json()
 
         metrics_summary = {
             "total_signup_users": signup_metrics["total_signup_users"],
+            "total_signup_users_with_emails": signup_metrics[
+                "total_signup_users_with_emails"
+            ],
             "total_retained_users": retained_metrics["total_retained_users"],
-            "total_retained_users_with_tokens": retained_metrics["total_retained_users_with_tokens"],
+            "total_retained_users_with_emails": retained_metrics[
+                "total_retained_users_with_emails"
+            ],
+            "total_retained_users_with_tokens": retained_metrics[
+                "total_retained_users_with_tokens"
+            ],
             "total_signups_from_bridges": signup_metrics["total_signups_from_bridges"],
             "total_signup_countries": signup_metrics["total_countries"],
             "total_retained_countries": retained_metrics["total_countries"],
@@ -63,7 +71,7 @@ def get_summary(params: dict):
             "total_published_publications": publisher_metrics_data["total_published"],
             "total_failed_publications": publisher_metrics_data["total_failed"],
             "signup_countries": signup_metrics["countries"],
-            "retained_countries": retained_metrics["countries"]
+            "retained_countries": retained_metrics["countries"],
         }
 
         return metrics_summary
@@ -132,6 +140,7 @@ def get_retained(params: dict):
 
     except requests.RequestException as e:
         raise e
+
 
 def get_publications(params: dict):
     """
