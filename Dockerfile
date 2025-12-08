@@ -1,5 +1,5 @@
 
-FROM python:3.13.7-slim
+FROM python:3.14.1-slim
 
 WORKDIR /aggregator
 
