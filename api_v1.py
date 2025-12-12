@@ -5,20 +5,22 @@ Public License was not distributed with this file, see <https://www.gnu.org/lice
 """
 
 from typing import Annotated
+
 import requests
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
-from data_retriever import get_summary, get_signup, get_retained, get_publications
+
 from api_data_schemas import (
-    MetricsParams,
     ErrorResponse,
-    SummaryResponse,
-    SummaryParams,
-    SignupResponse,
-    RetainedResponse,
+    MetricsParams,
     PublicationsParams,
-    PublicationsResponse
+    PublicationsResponse,
+    RetainedResponse,
+    SignupResponse,
+    SummaryParams,
+    SummaryResponse,
 )
+from data_retriever import get_publications, get_retained, get_signup, get_summary
 
 router = APIRouter(prefix="/v1", tags=["API V1"])
 
@@ -58,6 +60,8 @@ def summary(query: Annotated[SummaryParams, Query()]) -> SummaryResponse:
             "start_date": query.start_date,
             "end_date": query.end_date,
             "country_code": query.country_code,
+            "type": query.type,
+            "origin": query.origin,
         }
 
         summary_data = get_summary(params)
@@ -93,6 +97,8 @@ def signup(query: Annotated[MetricsParams, Query()]) -> SignupResponse:
             "top": query.top,
             "page": query.page,
             "page_size": query.page_size,
+            "type": query.type,
+            "origin": query.origin,
         }
 
         signup_data = get_signup(params)
@@ -128,6 +134,8 @@ def retained(query: Annotated[MetricsParams, Query()]) -> RetainedResponse:
             "top": query.top,
             "page": query.page,
             "page_size": query.page_size,
+            "type": query.type,
+            "origin": query.origin,
         }
 
         retained_data = get_retained(params)
@@ -139,6 +147,7 @@ def retained(query: Annotated[MetricsParams, Query()]) -> RetainedResponse:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
         ) from e
+
 
 @router.get(
     "/publications",
@@ -174,3 +183,4 @@ def publications(query: Annotated[PublicationsParams, Query()]):
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
         ) from e
+
