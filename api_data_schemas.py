@@ -35,6 +35,8 @@ class SummaryParams(BaseModel):
     country_code: str = Field(
         default=None, description="2-character ISO region code.", max_length=2
     )
+    type: str = Field(default=None, decribeption="Identifier type to filter by.")
+    origin: str = Field(default=None, description="Origin to filter by.")
 
 
 class SummaryResponse(BaseModel):
@@ -65,6 +67,12 @@ class MetricsParams(BaseModel):
     page: int = Query(default=1, ge=1, description="Page number for paginated results.")
     page_size: int = Query(
         default=10, ge=10, le=100, description="Number of records per page."
+    )
+    type: Literal["phone_number", "email_address"] = Field(
+        default=None, decribeption="Identifier type to filter by."
+    )
+    origin: Literal["web", "bridge"] = Field(
+        default=None, description="Origin to filter by."
     )
 
 
